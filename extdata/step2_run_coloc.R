@@ -1,6 +1,8 @@
 
+#!/usr/bin/env Rscript
+
 suppressMessages(library(optparse))
-source("R/run_coloc.R")
+source("run_coloc.R")
 
 
 option_list <- list(

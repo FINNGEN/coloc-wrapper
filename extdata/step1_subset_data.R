@@ -1,3 +1,5 @@
+#!/usr/bin/env Rscript
+
 suppressMessages(library(optparse))
 
 option_list <- list(
@@ -8,7 +10,7 @@ option_list <- list(
 
 opt <- optparse::parse_args(optparse::OptionParser(option_list=option_list))
 
-source("R/subset_data.R")
+source("subset_data.R")
 
 subset_data_file(infile = opt$file, region = opt$region, outfile = opt$out)  
 

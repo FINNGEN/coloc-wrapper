@@ -10,7 +10,7 @@ option_list <- list(
 
 opt <- optparse::parse_args(optparse::OptionParser(option_list=option_list))
 
-source("subset_data.R")
+source("/usr/local/bin/subset_data.R") ## not ideal: better create an R package
 
 subset_data_file(infile = opt$file, region = opt$region, outfile = opt$out)  
 

@@ -15,20 +15,6 @@ options(bitmapType='cairo')
 #           eqtl_header = c(varid = "rsid", pvalues = "pvalue", MAF = "maf", gene_id = "gene_id"), locuscompare_thresh = 0)
 
 
-#' inserts \n into a string that is too long
-#' @param string 
-#' @param n length after which to insert a \n
-#' @example split_string(letters, n = 10)
-split_string <- function(string, n=40) {
-    tmp <- unlist(strsplit(string, ""))
-    pos <- c(seq(from = 1, to = length(tmp), by = n), length(tmp))
-    
-    new_title <- NULL
-    for (i in 1:(length(pos)-1)) {
-        new_title <- paste(c(new_title, tmp[pos[i]:pos[i+1]], "\n"), sep = "", collapse = "")
-    }
-    return(new_title)
-}
 
 #' plots the locus and saves it in a file
 #' @param df a data frame of one gene, contains both GWAS and eQTL data for it 
@@ -36,9 +22,8 @@ split_string <- function(string, n=40) {
 #' @param filename the name of the output file 
 #' @param coloc coloc results (h0-h4 columns)
 
-locuscompare <- function(df, gene, filename, coloc = NULL) {
+locuscompare <- function(df, gene, filename, title, coloc = NULL) {
 
-    filename <- sapply(strsplit(filename, ".", fixed = TRUE), function(x) x[1])
 
     if (!(any(names(df) %in% "pvalues.gwas"))) {
         stop("GWAS pvalue column is needed for the locuscompare plot, but missing from the data.")
@@ -50,7 +35,7 @@ locuscompare <- function(df, gene, filename, coloc = NULL) {
 
     plot <- ggplot2::ggplot(data = df, aes(x = -log10(pvalues.gwas), y = -log10(pvalues.eqtl))) + geom_point(size = 0.6) + geom_abline(color = "black", linetype = 3) + 
         geom_smooth(method = "lm", se = FALSE, color = "black", size = 0.5) + theme_light() + #coord_fixed(ratio = 1) +
-        labs(title = split_string(basename(filename)), subtitle = gene, x = "GWAS -log10(P)", y = "eQTL -log10(P)") + 
+        labs(title = title, subtitle = gene, x = "GWAS -log10(P)", y = "eQTL -log10(P)") + 
         theme(axis.text.x = element_text(size = 7), axis.text.y = element_text(size = 7), axis.text = element_text(size = 7), plot.title = element_text(size = 12)) + 
         geom_rug()
     
@@ -112,7 +97,8 @@ run_coloc <- function(eqtl_data, gwas_data, out = NULL, p1 = 1e-4, p2 = 1e-4, p1
     gwas_info = list(type = "cc", s = NA, N = NA), 
     gwas_header = c(varid = "rsids", pvalues = "pval", MAF = "maf"),
     eqtl_header = c(varid = "rsid", pvalues = "pvalue", MAF = "maf", gene_id = "gene_id"),
-    locuscompare_thresh =  1) {
+    locuscompare_thresh =  1, 
+    locuscompare_title = out) {
     
     ## check if files empty --------------------
     if (file.info(gwas_data)$size == 0) {
@@ -197,7 +183,7 @@ run_coloc <- function(eqtl_data, gwas_data, out = NULL, p1 = 1e-4, p2 = 1e-4, p1
                     res <- as.data.frame(t(res$summary))
                                         
                     if (res$PP.H4.abf > locuscompare_thresh) {
-                        locuscompare(df = df_sub, gene = x, filename = out, coloc = res)
+                        locuscompare(df = df_sub, gene = x, filename = out, title = locuscompare_title, coloc = res)
                     }
                     
                  

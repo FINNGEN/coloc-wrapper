@@ -16,7 +16,7 @@ option_list <- list(
     optparse::make_option(c("--info_gwas"), type="character", default="list(type = 'cc', s = 11006/117692, N  = 11006 + 117692)", help="Options for gwas datalist"),
     optparse::make_option(c("--info_eqtl"), type="character", default="list(type = 'quant', sdY = 1, N = 491)", help="Options for eqtl datalist"),    
     optparse::make_option(c("--locuscompare_thresh"), type="double", default=0.7, help="Which genes to plot"),
-    optparse::make_option(c("--locuscompare_title"), type="character", default="c('cc')", help="Title for locuszoomplot")  
+    optparse::make_option(c("--title"), type="character", help="Title for locuszoomplot")  
   
 )
 
@@ -28,7 +28,7 @@ header_gwas <- eval(parse(text=opt$header_gwas))
 info_eqtl <- eval(parse(text=opt$info_eqtl))
 info_gwas <- eval(parse(text=opt$info_gwas))
 
-locuscompare_title = paste(eval(parse(text=opt$locuscompare_title)), collapse = "\n")
+locuscompare_title = paste(eval(parse(text=opt$title)), collapse = "\n")
 print(locuscompare_title)
 
 run_coloc(eqtl_data = opt$eqtl, gwas_data = opt$gwas, 

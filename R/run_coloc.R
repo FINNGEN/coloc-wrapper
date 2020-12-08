@@ -20,6 +20,7 @@ options(bitmapType='cairo')
 #' @param df a data frame of one gene, contains both GWAS and eQTL data for it 
 #' @param gene the name of the gene
 #' @param filename the name of the output file 
+#' @param title of ggplot 
 #' @param coloc coloc results (h0-h4 columns)
 
 locuscompare <- function(df, gene, filename, title, coloc = NULL) {
@@ -48,7 +49,6 @@ locuscompare <- function(df, gene, filename, title, coloc = NULL) {
     }
 
     ggplot2::ggsave(filename = paste0(filename, "_locuscompare_", gene, ".png"), plot = plot, width = 15, height = 15, units = "cm")
-    print(plot)
 }
 
 
@@ -75,6 +75,7 @@ locuscompare <- function(df, gene, filename, title, coloc = NULL) {
 #' @param gwas_header vector containing headers of gwas_data, either c(varid, pvalues, MAF) or c(varid, beta, sebeta, maf).
 #' @param eqtl_header vector containing headers of eqtl_data, either c(varid, gene_id, pvalues, MAF) or c(varid, gene_id, beta, sebeta, maf).
 #' @param locuscompare_thresh PP4 values between 0 and 1, anything above threshold will be plotted.
+#' @param locuscompare_title string for title.
 #' @details for input data and parameters see https://chr1swallace.github.io/coloc/
 #' varid can be any variant identifier, but format needs to match between datasets. 
 #' @examples
@@ -88,6 +89,7 @@ locuscompare <- function(df, gene, filename, title, coloc = NULL) {
 #'    gwas_header = c(varid = "rsids", pvalues = "pval", MAF = "maf"), #, beta = "beta", se = "sebeta"),
 #'    eqtl_header = c(varid = "rsid", pvalues = "pvalue", MAF = "maf", gene_id = "gene_id"), 
 #'    locuscompare_thresh = 0,
+#'    locuscompare_title = "abc",
 #'   )
 
 
@@ -99,6 +101,7 @@ run_coloc <- function(eqtl_data, gwas_data, out = NULL, p1 = 1e-4, p2 = 1e-4, p1
     eqtl_header = c(varid = "rsid", pvalues = "pvalue", MAF = "maf", gene_id = "gene_id"),
     locuscompare_thresh =  1, 
     locuscompare_title = out) {
+
     
     ## check if files empty --------------------
     if (file.info(gwas_data)$size == 0) {

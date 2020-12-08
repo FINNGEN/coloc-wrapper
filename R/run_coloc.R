@@ -102,7 +102,8 @@ run_coloc <- function(eqtl_data, gwas_data, out = NULL, p1 = 1e-4, p2 = 1e-4, p1
     locuscompare_thresh =  1, 
     locuscompare_title = out) {
 
-    
+    print(locuscompare_title)
+
     ## check if files empty --------------------
     if (file.info(gwas_data)$size == 0) {
         stop("GWAS file is empty.")

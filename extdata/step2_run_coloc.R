@@ -29,7 +29,7 @@ info_eqtl <- eval(parse(text=opt$info_eqtl))
 info_gwas <- eval(parse(text=opt$info_gwas))
 
 locuscompare_title = paste(eval(parse(text=opt$locuscompare_title)), collapse = "\n")
-
+print(locuscompare_title)
 
 run_coloc(eqtl_data = opt$eqtl, gwas_data = opt$gwas, 
         return_object = FALSE, return_file = TRUE, 
